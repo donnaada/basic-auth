@@ -36,8 +36,12 @@ router.get('/signin', (req, res) => {
 // Signin Route -- login with username and password
 // test with httpie
 // http post :3000/signin -a john:foo
-router.post('/signin', basicAuth, (req, res) => {
-  res.status(200).send(req);
+router.post('/signin', basicAuth, (req, res, next) => {
+  try {
+    res.status(200).json(req.user);
+  } catch (error) {
+    next('Invalid Login. Message: ' + error.message);
+  }
 });
 
 module.exports = router;
